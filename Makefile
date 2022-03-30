@@ -3,13 +3,15 @@
 
 CC=mpicc -Wall -Werror -O2 -Wno-unused-result
 
-
+TARGET=hash_cracker
 CSOURCES=${wildcard *.c}
-ALLTARGETS=${CSOURCES:.c=} ${CCSOURCES:.cc=} 
+OBJECTS=${CSOURCES:.c=.o}
 
-all: ${ALLTARGETS}	
+${TARGET}: ${OBJECTS}
 
-test: ${ALLTARGETS}	
+all: ${TARGET}	
+
+test: ${TARGET}	
 	echo "foobar 	 9pHdGraWcEy3y.NvdzCOSfu0XalZhBWUgJ/iKxpdipC  01  8"  	 	| mpiexec -n 4 ./hash_cracker
 	@echo "Correct answer: 204: '11001100'"
 	echo "notfound 	 9pHdGraWcEy3y.NvdzCOSfu0XalZhBWUgJ/iKxpdipC  23  8"  	 	| mpiexec -n 4 ./hash_cracker
@@ -22,7 +24,8 @@ test: ${ALLTARGETS}
 	@echo "Correct answer: 3150: 'C4E'"
 	echo "andpepper	 Xl9dddHVkCrdG3vTJkuEBK9ecqr/aZT5wJFKqz/PRJC  clangCLANK  4"  		| mpiexec -n 4 ./hash_cracker
 	@echo "Correct answer: 8251: 'NaCl'"
-
+	echo "rnderr     eNQG/ksOHKtFACs9sjiPMHvwiaSVFMiKOgtGUNVX9r3  01  8"        	| mpiexec -n 3 ./hash_cracker
+	@echo "Correct answer: 255: '11111111'"
 
 clean:
-	rm -f  *.o ${ALLTARGETS}
+	rm -f  *.o ${TARGET}
